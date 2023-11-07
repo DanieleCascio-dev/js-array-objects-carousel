@@ -1,6 +1,9 @@
 //Dichiarazioni variabili
 const items = document.querySelector(".items");
+const thumbnailElem = document.querySelector(".thumbnail");
+console.log(thumbnailElem);
 let imgMess = "";
+let thumbnailMess = "";
 
 const images = [
   {
@@ -40,15 +43,34 @@ for (let i = 0; i < images.length; i++) {
     <p>${curImg.text}</p>
   </div>
 </div>`;
+
+  const thumbnailDiv = document.createElement("div");
+  thumbnailElem.append(thumbnailDiv);
+  thumbnailDiv.classList.add("small-img");
+  thumbnailDiv.style.backgroundImage = `url(${curImg.image})`;
+  /* thumbnailMess += `<div class="small-img"></div>`; */
   // console.log(imgMess);
 }
 
 //Put the img into html
 items.innerHTML += imgMess;
 
+//put the img into the thumbanil
+/* thumbnailElem.innerHTML += thumbnailMess;
+const allThumb = document.querySelectorAll(".small-img");
+console.log(allThumb); */
+
+/* allThumb.forEach((currThumb) => {
+  for (let i = 0; i < images.length; i++) {
+    const curImg = images[i];
+    console.log(currThumb);
+    currThumb.style.backgroundImage = `url(${curImg.image})`;
+  }
+}); */
+
 //Array with all item in html
 const allImg = document.querySelectorAll(".item");
-console.log(allImg);
+/* console.log(allImg); */
 
 //set a variable for last postion of allImg
 const lastPos = allImg.length - 1;
