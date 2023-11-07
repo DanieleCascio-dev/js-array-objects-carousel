@@ -97,3 +97,15 @@ allThumbnail.forEach((currThumbnail, index) => {
     indexImg = index;
   });
 });
+
+setInterval(function () {
+  allImg[indexImg].classList.remove("active");
+  if (indexImg >= lastPos) {
+    indexImg = 0;
+  } else {
+    indexImg++;
+  }
+  allImg[indexImg].classList.add("active");
+}, 3000);
+
+/* FUNCTION */
