@@ -48,28 +48,15 @@ for (let i = 0; i < images.length; i++) {
   thumbnailElem.append(thumbnailDiv);
   thumbnailDiv.classList.add("small-img");
   thumbnailDiv.style.backgroundImage = `url(${curImg.image})`;
-  /* thumbnailMess += `<div class="small-img"></div>`; */
-  // console.log(imgMess);
 }
 
 //Put the img into html
 items.innerHTML += imgMess;
 
-//put the img into the thumbanil
-/* thumbnailElem.innerHTML += thumbnailMess;
-const allThumb = document.querySelectorAll(".small-img");
-console.log(allThumb); */
-
-/* allThumb.forEach((currThumb) => {
-  for (let i = 0; i < images.length; i++) {
-    const curImg = images[i];
-    console.log(currThumb);
-    currThumb.style.backgroundImage = `url(${curImg.image})`;
-  }
-}); */
-
 //Array with all item in html
 const allImg = document.querySelectorAll(".item");
+const allThumbnail = document.querySelectorAll(".small-img");
+console.log(allThumbnail);
 /* console.log(allImg); */
 
 //set a variable for last postion of allImg
@@ -101,4 +88,12 @@ document.querySelector(".prev").addEventListener("click", function () {
     indexImg--;
   }
   allImg[indexImg].classList.add("active");
+});
+
+allThumbnail.forEach((currThumbnail, index) => {
+  currThumbnail.addEventListener("click", function () {
+    allImg[indexImg].classList.remove("active");
+    allImg[index].classList.add("active");
+    indexImg = index;
+  });
 });
