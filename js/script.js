@@ -35,22 +35,6 @@ const images = [
 // console.log(arrayImg);
 
 createSliderWithThumbs(images);
-/* 
-for (let i = 0; i < images.length; i++) {
-  const curImg = images[i];
-  imgMess += ` <div class="item">
-  <img src="${curImg.image}" alt="" />
-  <div class="img-info">
-    <h2>${curImg.title}</h2>
-    <p>${curImg.text}</p>
-  </div>
-</div>`;
-
-  const thumbnailDiv = document.createElement("div");
-  thumbnailElem.append(thumbnailDiv);
-  thumbnailDiv.classList.add("small-img");
-  thumbnailDiv.style.backgroundImage = `url(${curImg.image})`;
-} */
 
 //Put the img into html
 items.innerHTML += imgMess;
@@ -73,46 +57,43 @@ allThumbnail[indexImg].classList.add("selected");
 
 //add interval
 const interval = setInterval(function () {
-  allImg[indexImg].classList.remove("active");
+  removeSlidesAndThumb(indexImg);
   if (indexImg >= lastPos) {
     indexImg = 0;
   } else {
     indexImg++;
   }
-  allImg[indexImg].classList.add("active");
+  showSlidesAndThumb(indexImg);
 }, 3000);
 
 //Event listener and for iterations to "next" div
 document.querySelector(".next").addEventListener("click", function () {
   clearInterval(interval);
-  allImg[indexImg].classList.remove("active");
-  allThumbnail[indexImg].classList.remove("selected");
+  removeSlidesAndThumb(indexImg);
   if (indexImg >= lastPos) {
     indexImg = 0;
   } else {
     indexImg++;
   }
-  allImg[indexImg].classList.add("active");
-  allThumbnail[indexImg].classList.add("selected");
+  showSlidesAndThumb(indexImg);
 });
 
 //Event listener and for iterations to "prev" div
 document.querySelector(".prev").addEventListener("click", function () {
-  allImg[indexImg].classList.remove("active");
-  allThumbnail[indexImg].classList.remove("selected");
+  removeSlidesAndThumb(indexImg);
   if (indexImg <= 0) {
     indexImg = lastPos;
   } else {
     indexImg--;
   }
-  allImg[indexImg].classList.add("active");
-  allThumbnail[indexImg].classList.add("selected");
+  showSlidesAndThumb(indexImg);
 });
 
+/* Quando clicco su un thumb cambia anche la img nello slides */
 allThumbnail.forEach((currThumbnail, index) => {
   currThumbnail.addEventListener("click", function () {
-    allImg[indexImg].classList.remove("active");
-    allImg[index].classList.add("active");
+    removeSlidesAndThumb(indexImg);
+    showSlidesAndThumb(index);
     indexImg = index;
   });
 });
@@ -120,13 +101,11 @@ allThumbnail.forEach((currThumbnail, index) => {
 /* FUNCTION */
 
 function createSliderWithThumbs(slidesArray) {
-  for (let i = 0; i < slidesArray.length; i++) {
-    const curImg = slidesArray[i];
-
+  slidesArray.forEach((curImg) => {
     imgMess += createSlides(curImg);
 
     createThumbnail(curImg);
-  }
+  });
 }
 
 /* Crea un elemento che rappresenta uno slide */
@@ -140,11 +119,22 @@ function createSlides(singleSlide) {
 </div>`;
 }
 
+/* Crea un elemento che rappresenta un thumbnail */
 function createThumbnail(singleSlide) {
   const thumbnailDiv = document.createElement("div");
   thumbnailElem.append(thumbnailDiv);
   thumbnailDiv.classList.add("small-img");
   thumbnailDiv.style.backgroundImage = `url(${singleSlide.image})`;
+}
+
+function removeSlidesAndThumb(indexImg) {
+  allImg[indexImg].classList.remove("active");
+  allThumbnail[indexImg].classList.remove("selected");
+}
+
+function showSlidesAndThumb(indexImg) {
+  allImg[indexImg].classList.add("active");
+  allThumbnail[indexImg].classList.add("selected");
 }
 
 function nextImg(allImg, indexImg, lastPos) {
