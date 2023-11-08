@@ -153,3 +153,7 @@ img {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.selected {
+  border: 1px solid white;
+}

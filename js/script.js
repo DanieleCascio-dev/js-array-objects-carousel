@@ -34,6 +34,8 @@ const images = [
 ];
 // console.log(arrayImg);
 
+createSliderWithThumbs(images);
+/* 
 for (let i = 0; i < images.length; i++) {
   const curImg = images[i];
   imgMess += ` <div class="item">
@@ -48,7 +50,7 @@ for (let i = 0; i < images.length; i++) {
   thumbnailElem.append(thumbnailDiv);
   thumbnailDiv.classList.add("small-img");
   thumbnailDiv.style.backgroundImage = `url(${curImg.image})`;
-}
+} */
 
 //Put the img into html
 items.innerHTML += imgMess;
@@ -67,9 +69,10 @@ let indexImg = 0;
 
 //Set the first img to display block
 allImg[0].classList.add("active");
+allThumbnail[indexImg].classList.add("selected");
 
-//Event listener and for iterations to "next" div
-document.querySelector(".next").addEventListener("click", function () {
+//add interval
+const interval = setInterval(function () {
   allImg[indexImg].classList.remove("active");
   if (indexImg >= lastPos) {
     indexImg = 0;
@@ -77,17 +80,33 @@ document.querySelector(".next").addEventListener("click", function () {
     indexImg++;
   }
   allImg[indexImg].classList.add("active");
+}, 3000);
+
+//Event listener and for iterations to "next" div
+document.querySelector(".next").addEventListener("click", function () {
+  clearInterval(interval);
+  allImg[indexImg].classList.remove("active");
+  allThumbnail[indexImg].classList.remove("selected");
+  if (indexImg >= lastPos) {
+    indexImg = 0;
+  } else {
+    indexImg++;
+  }
+  allImg[indexImg].classList.add("active");
+  allThumbnail[indexImg].classList.add("selected");
 });
 
 //Event listener and for iterations to "prev" div
 document.querySelector(".prev").addEventListener("click", function () {
   allImg[indexImg].classList.remove("active");
+  allThumbnail[indexImg].classList.remove("selected");
   if (indexImg <= 0) {
     indexImg = lastPos;
   } else {
     indexImg--;
   }
   allImg[indexImg].classList.add("active");
+  allThumbnail[indexImg].classList.add("selected");
 });
 
 allThumbnail.forEach((currThumbnail, index) => {
@@ -98,7 +117,37 @@ allThumbnail.forEach((currThumbnail, index) => {
   });
 });
 
-setInterval(function () {
+/* FUNCTION */
+
+function createSliderWithThumbs(slidesArray) {
+  for (let i = 0; i < slidesArray.length; i++) {
+    const curImg = slidesArray[i];
+
+    imgMess += createSlides(curImg);
+
+    createThumbnail(curImg);
+  }
+}
+
+/* Crea un elemento che rappresenta uno slide */
+function createSlides(singleSlide) {
+  return ` <div class="item">
+  <img src="${singleSlide.image}" alt="" />
+  <div class="img-info">
+    <h2>${singleSlide.title}</h2>
+    <p>${singleSlide.text}</p>
+  </div>
+</div>`;
+}
+
+function createThumbnail(singleSlide) {
+  const thumbnailDiv = document.createElement("div");
+  thumbnailElem.append(thumbnailDiv);
+  thumbnailDiv.classList.add("small-img");
+  thumbnailDiv.style.backgroundImage = `url(${singleSlide.image})`;
+}
+
+function nextImg(allImg, indexImg, lastPos) {
   allImg[indexImg].classList.remove("active");
   if (indexImg >= lastPos) {
     indexImg = 0;
@@ -106,6 +155,4 @@ setInterval(function () {
     indexImg++;
   }
   allImg[indexImg].classList.add("active");
-}, 3000);
-
-/* FUNCTION */
+}
