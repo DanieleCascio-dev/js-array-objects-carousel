@@ -32,8 +32,8 @@ const images = [
     text: "Marvel's Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.",
   },
 ];
-// console.log(arrayImg);
 
+//Create slides and thumbnail
 createSliderWithThumbs(images);
 
 //Put the img into html
@@ -42,8 +42,6 @@ items.innerHTML += imgMess;
 //Array with all item in html
 const allImg = document.querySelectorAll(".item");
 const allThumbnail = document.querySelectorAll(".small-img");
-console.log(allThumbnail);
-/* console.log(allImg); */
 
 //set a variable for last postion of allImg
 const lastPos = allImg.length - 1;
@@ -56,48 +54,26 @@ allImg[0].classList.add("active");
 allThumbnail[indexImg].classList.add("selected");
 
 //add interval
-const interval = setInterval(function () {
-  removeSlidesAndThumb(indexImg);
-  if (indexImg >= lastPos) {
-    indexImg = 0;
-  } else {
-    indexImg++;
-  }
-  showSlidesAndThumb(indexImg);
-}, 3000);
+let interval = setInterval(nextImg, 3000);
 
-//Event listener and for iterations to "next" div
-document.querySelector(".next").addEventListener("click", function () {
-  clearInterval(interval);
-  removeSlidesAndThumb(indexImg);
-  if (indexImg >= lastPos) {
-    indexImg = 0;
-  } else {
-    indexImg++;
-  }
-  showSlidesAndThumb(indexImg);
-});
+//Event listener to "next" div
+document.querySelector(".next").addEventListener("click", nextImg);
 
-//Event listener and for iterations to "prev" div
-document.querySelector(".prev").addEventListener("click", function () {
-  removeSlidesAndThumb(indexImg);
-  if (indexImg <= 0) {
-    indexImg = lastPos;
-  } else {
-    indexImg--;
-  }
-  showSlidesAndThumb(indexImg);
-});
+//Event listener to "prev" div
+document.querySelector(".prev").addEventListener("click", prevImg);
 
 /* Quando clicco su un thumb cambia anche la img nello slides */
 allThumbnail.forEach((currThumbnail, index) => {
   currThumbnail.addEventListener("click", function () {
+    clearInterval(interval);
     removeSlidesAndThumb(indexImg);
     showSlidesAndThumb(index);
     indexImg = index;
+    interval = setInterval(nextImg, 3000);
   });
 });
 
+/* *************************** */
 /* FUNCTION */
 
 function createSliderWithThumbs(slidesArray) {
@@ -137,12 +113,26 @@ function showSlidesAndThumb(indexImg) {
   allThumbnail[indexImg].classList.add("selected");
 }
 
-function nextImg(allImg, indexImg, lastPos) {
-  allImg[indexImg].classList.remove("active");
+function nextImg() {
+  clearInterval(interval);
+  removeSlidesAndThumb(indexImg);
   if (indexImg >= lastPos) {
     indexImg = 0;
   } else {
     indexImg++;
   }
-  allImg[indexImg].classList.add("active");
+  showSlidesAndThumb(indexImg);
+  interval = setInterval(nextImg, 3000);
+}
+
+function prevImg() {
+  clearInterval(interval);
+  removeSlidesAndThumb(indexImg);
+  if (indexImg <= 0) {
+    indexImg = lastPos;
+  } else {
+    indexImg--;
+  }
+  showSlidesAndThumb(indexImg);
+  interval = setInterval(nextImg, 3000);
 }
